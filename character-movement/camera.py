@@ -1,0 +1,103 @@
+import pygame
+import main
+import global_var as Glob
+
+
+"""
+
+    ---  Classe che controlla la posizione attuale del giocatore dello schermo e aggiorna i contenuti dello schermo spostandoli 
+
+                In questo modo ferma anche il giocatore e da' l'illusione che tutto si sta muovendo
+
+"""
+
+class Cam():
+    def __init__(self):
+
+        #indico il giocatore impostato
+        self.setPositionX(0) 
+        self.setPositionY(0)
+
+        self.image = pygame.image.load("assets/BackgroundCam.png").convert()
+
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
+
+        self.image = pygame.transform.scale(self.image,((self.width*Glob.MULT*3), (self.height*Glob.MULT*3)))
+
+
+    def setPositionX(self, x):
+        self.x = x
+
+    def setPositionY(self, y):
+        self.y = y
+
+    def getPositionX(self):
+        return self.x
+
+    def getPositionY(self):
+        return self.y
+
+        
+    def update(self, visibility):
+        Glob.screen.blit(self.image, (self.x, self.y))
+
+        offset = (4 * Glob.Moff * Glob.MULT, 2.25 * Glob.Moff * Glob.MULT)
+
+        a =  main.player.getPositionX() >= Glob.screen_width - offset[0] - main.player.width
+        b =  main.player.getPositionX() <= offset[0]
+
+        c =  main.player.getPositionY() >= Glob.screen_height - offset[1] - main.player.height
+        d =  main.player.getPositionY() <= offset[1]
+
+        a1 = main.player.getRightPress()
+        b1 = main.player.getLeftPress()
+
+        c1 = main.player.getDownPress()
+        d1 = main.player.getUpPress()
+
+        ln = main.player.Last_keyPressed=="Null"
+
+        if a and ln and not (main.player.getLeftPress() or main.player.getRightPress()):
+            main.player.x -= Glob.Player_default_speed
+
+        if b and ln and not (main.player.getLeftPress() or main.player.getRightPress()):
+            main.player.x += Glob.Player_default_speed
+
+        if c and ln and not (main.player.getUpPress() or main.player.getDownPress()):
+            main.player.y -= Glob.Player_default_speed
+
+        if d and ln and not (main.player.getUpPress() or main.player.getDownPress()):
+            main.player.y += Glob.Player_default_speed
+
+        if a and a1 or ln and a:
+            main.player.setPositionX(main.player.getPositionX()-main.player.getVelocitaX())
+            self.x -= main.player.getVelocitaX()
+            # print("A vero")
+    
+
+        if b and b1 or ln and b:
+            main.player.setPositionX(main.player.getPositionX()-main.player.getVelocitaX())
+            self.x += -main.player.getVelocitaX()
+            # print("B vero")
+
+
+        if c and c1 or ln and c:
+            main.player.setPositionY(main.player.getPositionY()-main.player.getVelocitaY())
+            self.y -= main.player.getVelocitaY()
+            # print("C vero")
+    
+
+        if d and d1 or ln and d:
+            main.player.setPositionY(main.player.getPositionY()-main.player.getVelocitaY())
+            self.y += -main.player.getVelocitaY()
+            # print("D vero")
+        
+        if visibility:
+
+            Player_hitbox = [ 15 * Glob.MULT /Glob.Player_proportion, 17 * Glob.MULT /Glob.Player_proportion, 24 * Glob.MULT /Glob.Player_proportion, 43 * Glob.MULT /Glob.Player_proportion]
+
+            Offset_rect = pygame.Rect(offset[0] + Player_hitbox[0], offset[1] + Player_hitbox[1], Glob.screen_width - offset[0]*2 - Player_hitbox[0]*2, Glob.screen_height - offset[1]*2 - Player_hitbox[1]*2)
+            pygame.draw.rect(Glob.screen, (255,255,255), Offset_rect, int(Glob.MULT))
+        
+        #print("Posizione x: "+str(main.player.getPositionX())+" | Posizione y: "+str(main.player.getPositionY())+" | VelocitàX: "+str(main.player.getVelocitaX()))
