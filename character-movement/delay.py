@@ -98,7 +98,7 @@ def main():
         screen.fill((12,24,36))
 
         delay.Infinite()
-        delay.ActualState()
+        #delay.ActualState()
 
         testo = pygame.font.Font("freesansbold.ttf", 102).render(str(var), True, "White")
 
