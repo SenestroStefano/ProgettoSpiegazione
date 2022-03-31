@@ -1,7 +1,11 @@
-import pygame
+import pygame, sys
 
 FPS = 30
 clock = pygame.time.Clock()
+
+screen_width, screen_height = 800, 800
+screen = pygame.display.set_mode((screen_width,screen_height))
+pygame.display.set_caption("Delay")
 
 class Delay():
     def __init__(self, sec, event):
@@ -84,11 +88,27 @@ delay = Delay(sec = 3, event = miaFunzione)
 
 def main():
     while True:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+
+        screen.fill((12,24,36))
+
         delay.Infinite()
+        delay.ActualState()
+
+        testo = pygame.font.Font("freesansbold.ttf", 102).render(str(var), True, "White")
+
+        screen.blit(testo, (screen_width/2 - testo.get_width()/2, screen_height/2 - testo.get_height()/2))
 
         #delay.ActualState()
 
         clock.tick(FPS)
+        pygame.display.flip()
 
 if __name__ == "__main__":
+    pygame.init()
     main()
