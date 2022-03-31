@@ -55,13 +55,13 @@ class Debug():
             key = ""
 
             if player.getUpPress():
-                key = "↑"
+                key = "up"
             elif player.getDownPress():
-                key = "↓"
+                key = "down"
             elif player.getLeftPress():
-                key = "←"
+                key = "left"
             elif player.getRightPress():
-                key = "→"
+                key = "right"
             
             FPS_TEXT = get_font(8*int(Glob.MULT)).render("FPS: "+str(int(clock.get_fps())), True, "white")
             FPS_RECT = FPS_TEXT.get_rect(center=(Glob.screen_width-40*Glob.MULT, 20*Glob.MULT))
@@ -188,7 +188,7 @@ class Player():
         if self.getIsWalking():
 
             self.current_spriteWO += 0.2 / Glob.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
-            self.current_spriteWVD += 0.2 / Glob.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
+            self.current_spriteWVD += 0.2 / Glob.Delta_Time
             self.current_spriteWVU += 0.2 / Glob.Delta_Time
 
             # Controllo di non uscire dal range dei frames possibili
