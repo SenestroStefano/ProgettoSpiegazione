@@ -4,7 +4,7 @@ TITLE = "Smooth Animation"
 
 # Valori di proporzione
 
-Delta_Time = 2 # Delta_Time (Congliabile 1/2)
+Delta_Time = 1 # Delta_Time (Congliabile 1/2)
 Player_proportion = 1 # Divisore della grandezza del giocatore
 
 #FPS
@@ -27,8 +27,7 @@ Cam_visible = True
 
 Debug = True
 
-Player_speed = 2 * MULT
-PlayerRun_speed = 3 * MULT
+Player_speed = 4 * MULT / Delta_Time
 
 Player_default_speed = Player_speed
 

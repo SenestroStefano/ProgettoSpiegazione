@@ -9,7 +9,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 def get_font(size):
-    return pygame.font.Font("../font/font.ttf", size)
+    return pygame.font.Font("freesansbold.ttf", size)
 
 #Debug Class
 class Debug():
@@ -25,16 +25,13 @@ class Debug():
             key = ""
 
             if player.getUpPress():
-                key = "↑"
+                key = "up"
             elif player.getDownPress():
-                key = "↓"
+                key = "down"
             elif player.getLeftPress():
-                key = "←"
+                key = "left"
             elif player.getRightPress():
-                key = "→"
-
-            if sprint:
-                key = "|"+key+"|"
+                key = "right"
             
             FPS_TEXT = get_font(8*int(Glob.MULT)).render("FPS: "+str(int(clock.get_fps())), True, "white")
             FPS_RECT = FPS_TEXT.get_rect(center=(Glob.screen_width-40*Glob.MULT, 20*Glob.MULT))
@@ -134,25 +131,25 @@ class Cam():
         if a and a1 or ln and a:
             player.setPositionX(player.getPositionX()-player.getVelocitaX())
             self.x -= player.getVelocitaX()
-            print("A vero")
+            print("Cam-destra")
     
 
         if b and b1 or ln and b:
             player.setPositionX(player.getPositionX()-player.getVelocitaX())
             self.x += -player.getVelocitaX()
-            print("B vero")
+            print("Cam-sinistra")
 
 
         if c and c1 or ln and c:
             player.setPositionY(player.getPositionY()-player.getVelocitaY())
             self.y -= player.getVelocitaY()
-            print("C vero")
+            print("Cam-basso")
     
 
         if d and d1 or ln and d:
             player.setPositionY(player.getPositionY()-player.getVelocitaY())
             self.y += -player.getVelocitaY()
-            print("D vero")
+            print("Cam-alto")
         
         if visibility:
 
@@ -175,7 +172,7 @@ class Player:
         self.height = 16*Glob.MULT
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.color = (250, 120, 60)
+        self.color = "Red"
 
         #indicazione velocità (dinamica)
         self.setVelocitaX(0)
@@ -319,9 +316,6 @@ class Player:
     def setVelocitaY(self, y):
         self.__velY = y
 
-    def setIsWalking(self, val):
-        self.__is_walking = val
-
     def setRightPress(self, r):
         self.__right_pressed = r
 
@@ -381,6 +375,45 @@ def inizializza():
     cam = Cam()
     console = Debug()
 
+
+def render(lista, color, var, hitbox):
+        x = 0
+        y = 0
+        tiles_risoluzione = 32 * Glob.MULT
+        collisione = pygame.Rect(x + cam.getPositionX(), y + cam.getPositionY(), tiles_risoluzione, tiles_risoluzione)
+
+        for valore_y in range(len(lista)):
+
+            x = 0
+            for valore_x in range(len(lista[valore_y])):
+                condition = lista[valore_y][valore_x] == var
+
+                if condition:
+                    collisione = pygame.Rect(x + cam.getPositionX(), y + cam.getPositionY(), tiles_risoluzione, tiles_risoluzione)
+                    pygame.draw.rect(Glob.screen, color, collisione)
+                    #print("\n- Render | Oggetto a schermo!", object)
+                    
+                    if hitbox != None:
+                        #print("- Render | Collisione Oggetto Impostata!", collisione,"\n")
+                        player.HasCollision(collisione)
+
+                if Glob.Debug:
+                    pygame.draw.rect(Glob.screen, (255,0,0), collisione, 1)
+
+                x += tiles_risoluzione
+
+            y += tiles_risoluzione
+
+
+lista_oggetti = [
+
+    [1, 1, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0, 0, 0, 0],
+    [0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 1, 1]
+]
+
 def disegna():
     #Draw
     Glob.screen.fill((12, 24, 36))
@@ -388,10 +421,13 @@ def disegna():
     #print(cam.getPositionX(), cam.getPositionY())
     player.draw(Glob.screen)
 
-    obstacle = pygame.Rect((cam.getPositionX()+60*Glob.MULT),(cam.getPositionY()+90*Glob.MULT), 20*Glob.MULT, 55*Glob.MULT)
+    render(lista = lista_oggetti, color = "Blue", var = 1, hitbox = None)
+    render(lista = lista_oggetti, color = "Yellow", var = 0, hitbox = True)
 
-    pygame.draw.rect(Glob.screen, (0,100,255), obstacle)
-    player.HasCollision(obstacle)
+    # obstacle = pygame.Rect((cam.getPositionX()+60*Glob.MULT),(cam.getPositionY()+140*Glob.MULT), 20*Glob.MULT, 10*Glob.MULT)
+
+    # pygame.draw.rect(Glob.screen, (0,100,255), obstacle)
+    # player.HasCollision(obstacle)
 
     #update
     player.update()

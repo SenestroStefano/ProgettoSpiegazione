@@ -3,7 +3,7 @@ import global_var as Glob
 
 
 def get_font(size):
-    return pygame.font.Font("../font/font.ttf", size)
+    return pygame.font.Font("freesansbold.ttf", size)
 
 def inizializza():
     global clock, player, sceltaG, Folder_walkO, Folder_walkVD, Folder_walkVU
