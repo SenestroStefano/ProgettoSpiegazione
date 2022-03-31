@@ -4,7 +4,7 @@ TITLE = "Smooth Animation"
 
 # Valori di proporzione
 
-Delta_Time = 1 # Delta_Time (Congliabile 1/2)
+Delta_Time = 2 # Delta_Time (Congliabile 1/2)
 Player_proportion = 1 # Divisore della grandezza del giocatore
 
 #FPS
@@ -22,7 +22,6 @@ AU = 5
 # rapporto musica del gioco
 MU = 5
 
-Scelta = 0
 Cam_visible = True
 
 Debug = True
@@ -30,11 +29,6 @@ Debug = True
 Player_speed = 4 * MULT / Delta_Time
 
 Player_default_speed = Player_speed
-
-# Inizializzazione lista di animazione camminata
-PlayerWalkingO = []
-PlayerWalkingVD = []
-PlayerWalkingVU = []
 
 Background_Color = (12, 24, 36)
 
