@@ -1,12 +1,6 @@
 import pygame, sys
 
-FPS = 30
-clock = pygame.time.Clock()
-
-screen_width, screen_height = 800, 800
-screen = pygame.display.set_mode((screen_width,screen_height))
-pygame.display.set_caption("Delay")
-
+# Classe che imposta un delay asincrono ( i metodi devono essere richiamati dentro ad un while )
 class Delay():
     def __init__(self, sec, event):
         self.__min = 0
@@ -15,41 +9,37 @@ class Delay():
         self.__function = event
         self.__flag = True
 
-    #print(self.min, self.max, self.increment, self.function)
-
+    # | Avvia il delay -> Poi si interromperà |
     def Start(self):
         if self.__flag:
             self.__min += self.__increment
 
-            if int(self.__min) == self.__max:
+            if int(self.__min) >= self.__max:
                 self.__function()
                 self.__flag = False
 
-        #print(int(self.__min))
-
+    # | Restarta il delay |
     def ReStart(self):
         if not self.__flag:
             self.__min = 0
             self.__flag = True
 
-        #print(int(self.__min))
-
+    # | Imposta il delay a infinito |
     def Infinite(self):
         self.ReStart()
         self.Start()
 
+    # | Stampa lo stato attuale del delay |
     def ActualState(self):
         print("| Current Second: %d | Max Seconds: %d | Function: %s |" %(self.__min/FPS, self.__max/FPS, self.__function))
 
 
-class Delay1():
+class Delay_noFunction():
     def __init__(self, sec):
         self.__min = 0
         self.__max = sec * FPS
         self.__increment = 1
         self.__flag = True
-
-    #print(self.min, self.max, self.increment, self.function)
 
     def Start(self):
         if self.__flag:
@@ -61,14 +51,10 @@ class Delay1():
 
         return False
 
-        #print(int(self.__min))
-
     def ReStart(self):
         if not self.__flag:
             self.__min = 0
             self.__flag = True
-
-        #print(int(self.__min))
 
     def Infinite(self):
         self.ReStart()
@@ -77,16 +63,27 @@ class Delay1():
     def ActualState(self):
         print("| Current Second: %d | Max Seconds: %d | Function: %s |" %(self.__min/FPS, self.__max/FPS, self.__function))
 
-var = 0
+"""Esempio di funzione"""
+
+def inizializza():
+    global FPS, clock, screen, screen_width, screen_height, var
+
+    FPS = 30
+    clock = pygame.time.Clock()
+
+    screen_width, screen_height = 800, 800
+    screen = pygame.display.set_mode((screen_width,screen_height))
+    pygame.display.set_caption("Delay")
+    var = 0
 
 def miaFunzione():
     global var
     var += 1
     print(var)
 
-delay = Delay(sec = 3, event = miaFunzione)
-
 def main():
+    # Intervallo di tempo - Funzione Richiamante
+    delay = Delay(sec = 0.1, event = miaFunzione)
     while True:
 
         for event in pygame.event.get():
@@ -111,4 +108,5 @@ def main():
 
 if __name__ == "__main__":
     pygame.init()
+    inizializza()
     main()
