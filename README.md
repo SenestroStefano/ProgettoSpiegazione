@@ -1,5 +1,5 @@
 # ProgettoSpiegazione
-Progetto esposizione 23/03/2022
+Progetto esposizione 01/04/2022
 ## `pip3 install pygame --upgrade`
 
 # URL:
